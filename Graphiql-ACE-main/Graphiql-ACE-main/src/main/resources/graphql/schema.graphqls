@@ -7,6 +7,7 @@ type Query {
   allComptes: [Compte]
   compteById(id: ID): Compte
   totalSolde: SoldeStats
+  transactionsByCompteId(compteId: ID): [Transaction]
 }
 
 type Compte {
@@ -16,8 +17,17 @@ type Compte {
   type: TypeCompte
 }
 
+type Transaction {
+  id: ID
+  compteId: ID
+  montant: Float
+  type: String
+  dateTransaction: String
+}
+
 type Mutation {
   saveCompte(compte: CompteInput): Compte
+  addTransaction(compteId: ID!, montant: Float!, type: String!): Transaction
 }
 
 input CompteInput {
@@ -26,10 +36,10 @@ input CompteInput {
   type: TypeCompte
 }
 
-input CompteRequest {
-  solde: Float
-  dateCreation: String
-  type: TypeCompte
+input TransactionInput {
+  compteId: ID!
+  montant: Float!
+  type: String!
 }
 
 type SoldeStats {
